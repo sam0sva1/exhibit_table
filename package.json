@@ -1,0 +1,8 @@
+{
+  "name": "exhibit_table",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:sam0sva1/exhibit_table.git",
+  "author": "sam0sva1 <konstantus@live.ru>",
+  "license": "MIT"
+}
