@@ -11,9 +11,14 @@ export default {
   module: {
     loaders: [{
       test: /\.js$/,
-      loaders: ['babel'],
+      loaders: ['babel-loader'],
       exclude: /node_modules/,
       include: __dirname,
     }],
   },
+  resolve: {
+      alias: {
+          Data: path.resolve(__dirname, 'data/'),
+      }
+  }
 };
