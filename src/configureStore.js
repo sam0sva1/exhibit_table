@@ -1,17 +1,18 @@
 import { createStore } from 'redux'
 import mainReducer from './reducers'
 import data from 'Data'
+import tools from 'Tools'
 
 const configureStore = () => {
 
     const store = createStore(
         mainReducer,
         {
-            items: data.initial
+            items: tools.sorting(data.initial)
         }
     );
 
     return store
 }
 
-export default configureStore;
+export default configureStore

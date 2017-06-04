@@ -19,6 +19,7 @@ export default {
   resolve: {
       alias: {
           Data: path.resolve(__dirname, 'data/'),
+          Tools: path.resolve(__dirname, 'tools/'),
       }
   }
 };
