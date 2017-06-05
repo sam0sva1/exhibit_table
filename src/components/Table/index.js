@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import Filter from 'components/Filter'
+import tools from 'Tools'
 import './Table.sss'
 
 const Header = ({ filters }) => {
@@ -25,7 +26,7 @@ const getRows = (items) => {
         return (
             <tr key={name}>
                 <td>{name}</td>
-                <td>{city}, {country}</td>
+                <td>{tools.prepareOrigin(city, country)}</td>
                 <td>{organization}</td>
                 <td>{description}</td>
             </tr>
@@ -33,8 +34,28 @@ const getRows = (items) => {
     })
 }
 
+const getShowingItems = (items, filters) => {
+    const activeFilters = Object.keys(filters).filter(key => filters[key])
+    if (activeFilters.length) {
+        return items.filter(({ city, country }) => {
+            const origin = tools.prepareOrigin(city, country)
+            for (let one of activeFilters) {
+                if (one === origin) {
+                    return true
+                }
+            }
+            return false
+        })
+    } else {
+        return items
+    }
+}
+
 @connect(
-    (state) => ({...state}),
+    (state) => ({
+        ...state,
+        items: getShowingItems(state.items, state.filters)
+    }),
     null
 )
 class Table extends Component {

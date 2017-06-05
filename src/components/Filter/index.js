@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import { toggleFilter } from 'actions'
 import './Filter.sss'
 
-const Checkbox = ({ label, isChecked }) => {
+const Checkbox = ({ label, isChecked, toggleFilter }) => {
     return (
         <div>
             <label>
@@ -11,6 +12,7 @@ const Checkbox = ({ label, isChecked }) => {
                     type="checkbox"
                     value={label}
                     checked={isChecked}
+                    onChange={() => toggleFilter(label)}
                 />
                 {label}
             </label>
@@ -20,14 +22,20 @@ const Checkbox = ({ label, isChecked }) => {
 
 @connect(
     (state) => ({...state}),
-    null
+    (dispatch) => {
+        return {
+            onFilterClick: (label) => {
+                dispatch(toggleFilter(label))
+            }
+        }
+    }
 )
 class FilterField extends Component {
     render() {
-        const { filters } = this.props
+        const { filters, onFilterClick } = this.props
         return (
             <div className='filter'>
-                {Object.keys(filters).map(key => <Checkbox key={key} label={key} isChecked={filters[key]}/>)}
+                {Object.keys(filters).map(key => <Checkbox key={key} label={key} isChecked={filters[key]} toggleFilter={onFilterClick}/>)}
             </div>
         )
     }

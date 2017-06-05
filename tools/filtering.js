@@ -1,4 +1,5 @@
 import sorting from './sorting'
+import prepareOrigin from './prepareOrigin'
 
 export default (array) => {
     const names = []
@@ -6,11 +7,7 @@ export default (array) => {
 
     array
         .map(({ city, country }) => {
-            if (city && country) {
-                return `${city}, ${country}`
-            } else {
-                return `${city}${country}` || '—'
-            }
+            return prepareOrigin(city, country)
         })
         .forEach(origin => {
             if (!names.find(filter => filter === origin)) {
