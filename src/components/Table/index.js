@@ -1,15 +1,20 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import Filter from 'components/Filter'
+import './Table.sss'
 
-const Header = () => {
+const Header = ({ filters }) => {
     return (
         <thead>
             <tr>
-                <th>Название</th>
-                <th>Место создания</th>
-                <th>Организания</th>
-                <th>Описание</th>
+                <th className='table__header table__header--name'>Название</th>
+                <th className='table__header table__header--origin'>
+                    Место создания
+                    <Filter />
+                </th>
+                <th className='table__header table__header--organisation'>Организания</th>
+                <th className='table__header table__header--description'>Описание</th>
             </tr>
         </thead>
     )
@@ -36,7 +41,7 @@ class Table extends Component {
     render() {
         return (
             <table className="table table-bordered">
-                <Header />
+                <Header filters={this.props.filters}/>
                 <tbody>
                     {getRows(this.props.items)}
                 </tbody>
@@ -46,7 +51,8 @@ class Table extends Component {
 }
 
 Table.propTypes = {
-    items: PropTypes.array
+    items: PropTypes.array,
+    filters: PropTypes.array
 }
 
 export default Table
