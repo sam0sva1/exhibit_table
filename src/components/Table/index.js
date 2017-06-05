@@ -1,15 +1,26 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import autobind from 'autobind-decorator'
 import { connect } from 'react-redux'
 import Filter from 'components/Filter'
 import tools from 'Tools'
 import './Table.sss'
 
-const Header = ({ filters }) => {
+const SearchField = ({ onInput }) => {
+    const onChangeHandler = (event) => {
+        onInput(event.target.value)
+    }
+    return (<input type="text" onChange={onChangeHandler} placeholder='ввод для поиска' />)
+}
+
+const Header = ({ filters, onSearchInput }) => {
     return (
         <thead>
             <tr>
-                <th className='table__header table__header--name'>Название</th>
+                <th className='table__header table__header--name'>
+                    Название
+                    <SearchField onInput={onSearchInput} />
+                </th>
                 <th className='table__header table__header--origin'>
                     Место создания
                     <Filter />
@@ -34,7 +45,7 @@ const getRows = (items) => {
     })
 }
 
-const getShowingItems = (items, filters) => {
+const getFilteredItems = (items, filters) => {
     const activeFilters = Object.keys(filters).filter(key => filters[key])
     if (activeFilters.length) {
         return items.filter(({ city, country }) => {
@@ -51,29 +62,57 @@ const getShowingItems = (items, filters) => {
     }
 }
 
+const searchByToken = (token, items) => {
+    const trimedToken = token.toLowerCase().trim()
+    return items.filter(one => {
+        const decision = one.name.toLowerCase().indexOf(trimedToken)
+        return decision === -1 ? false : true
+    })
+}
+
+
+
 @connect(
     (state) => ({
         ...state,
-        items: getShowingItems(state.items, state.filters)
+        items: getFilteredItems(state.items, state.filters)
     }),
     null
 )
+@autobind
 class Table extends Component {
+    static propTypes = {
+        items: PropTypes.array
+    }
+
+    static defaultProps = {
+        items: []
+    }
+
+    state = {
+        input: ''
+    }
+
+    onSearchFieldInput(input) {
+        this.setState({ input })
+    }
+
+    getItems() {
+        const token = this.state.input.trim()
+        const { items } = this.props
+        const result = token ? searchByToken(token, items) : items
+        return getRows(result)
+    }
     render() {
         return (
             <table className="table table-bordered">
-                <Header filters={this.props.filters}/>
+                <Header filters={this.props.filters} onSearchInput={this.onSearchFieldInput} />
                 <tbody>
-                    {getRows(this.props.items)}
+                    {this.getItems()}
                 </tbody>
             </table>
         )
     }
-}
-
-Table.propTypes = {
-    items: PropTypes.array,
-    filters: PropTypes.array
 }
 
 export default Table
