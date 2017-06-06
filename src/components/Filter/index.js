@@ -2,23 +2,8 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { toggleFilter } from 'actions'
+import Checkbox from 'components/Checkbox'
 import './Filter.sss'
-
-const Checkbox = ({ label, isChecked, toggleFilter }) => {
-    return (
-        <div>
-            <label>
-                <input
-                    type="checkbox"
-                    value={label}
-                    checked={isChecked}
-                    onChange={() => toggleFilter(label)}
-                />
-                {label}
-            </label>
-        </div>
-    )
-}
 
 @connect(
     (state) => ({...state}),
@@ -30,7 +15,7 @@ const Checkbox = ({ label, isChecked, toggleFilter }) => {
         }
     }
 )
-class FilterField extends Component {
+class Filter extends Component {
     render() {
         const { filters, onFilterClick } = this.props
         return (
@@ -41,8 +26,8 @@ class FilterField extends Component {
     }
 }
 
-FilterField.propTypes = {
+Filter.propTypes = {
     filters: PropTypes.array
 }
 
-export default FilterField
+export default Filter

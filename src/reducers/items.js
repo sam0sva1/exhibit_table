@@ -1,13 +1,15 @@
+import tools from 'Tools'
+
 const items = (state = [], action) => {
   switch (action.type) {
-    case 'ADD_ITEM':
-      return [
+    case 'CREATE_ITEM':
+      return tools.sorting.array([
         ...state,
         action.item,
-      ];
+      ], 'name')
     default:
-      return state;
+      return state
   }
-};
+}
 
-export default items;
+export default items

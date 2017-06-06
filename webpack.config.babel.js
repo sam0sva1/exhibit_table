@@ -1,4 +1,4 @@
-import path from 'path';
+import path from 'path'
 
 export default {
   devtool: 'eval',
@@ -42,4 +42,4 @@ export default {
           Tools: path.resolve(__dirname, 'tools/'),
       }
   }
-};
+}

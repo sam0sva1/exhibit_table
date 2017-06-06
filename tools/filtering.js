@@ -15,7 +15,8 @@ export default (array) => {
             }
         })
 
-    sorting(names).forEach(filter => filters[filter] = false)
+    sorting.array(names)
+        .forEach(filter => filters[filter] = false)
 
     return filters
 }

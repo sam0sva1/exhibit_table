@@ -1,3 +1,5 @@
+import tools from 'Tools'
+
 const filters = (state = {}, action) => {
   switch (action.type) {
     case 'TOGGLE_FILTER':
@@ -5,9 +7,14 @@ const filters = (state = {}, action) => {
           ...state,
           [action.label]: !state[action.label]
       }
+    case 'CREATE_ITEM':
+      state[tools.prepareOrigin(action.item.city, action.item.country)] = false
+      return {
+          ...tools.sorting.properties(state)
+      }
     default:
-      return state;
+      return state
   }
-};
+}
 
-export default filters;
+export default filters

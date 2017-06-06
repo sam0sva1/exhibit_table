@@ -7,7 +7,7 @@ import express from 'express'
 const app = new express()
 const port = 5050
 
-const compiler = webpack(config);
+const compiler = webpack(config)
 app.use(webpackDevMiddleware(compiler, {
   noInfo: true,
   publicPath: config.output.publicPath,
@@ -22,7 +22,7 @@ app.get('/*', (req, res) => {
 app.listen(port, err => {
   /* eslint-disable no-console */
   if (err) {
-    console.error(err);
+    console.error(err)
   } else {
     console.info(`🚧  Server is running on http://localhost:${port}/.`)
   }

@@ -2,35 +2,12 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import autobind from 'autobind-decorator'
 import { connect } from 'react-redux'
-import Filter from 'components/Filter'
+import TableHeader from 'components/TableHeader'
+import Paging from 'components/Paging'
+import Listing from 'components/Listing'
 import tools from 'Tools'
+import { changePage, updateSearchToken } from 'actions'
 import './Table.sss'
-
-const SearchField = ({ onInput }) => {
-    const onChangeHandler = (event) => {
-        onInput(event.target.value)
-    }
-    return (<input type="text" onChange={onChangeHandler} placeholder='ввод для поиска' />)
-}
-
-const Header = ({ filters, onSearchInput }) => {
-    return (
-        <thead>
-            <tr>
-                <th className='table__header table__header--name'>
-                    Название
-                    <SearchField onInput={onSearchInput} />
-                </th>
-                <th className='table__header table__header--origin'>
-                    Место создания
-                    <Filter />
-                </th>
-                <th className='table__header table__header--organisation'>Организания</th>
-                <th className='table__header table__header--description'>Описание</th>
-            </tr>
-        </thead>
-    )
-}
 
 const getRows = (items) => {
     return items.map(({name, description, organization, city, country}) => {
@@ -70,8 +47,6 @@ const searchByToken = (token, items) => {
     })
 }
 
-
-
 @connect(
     (state) => ({
         ...state,
@@ -82,35 +57,36 @@ const searchByToken = (token, items) => {
 @autobind
 class Table extends Component {
     static propTypes = {
-        items: PropTypes.array
+        items: PropTypes.array,
+        pagination: PropTypes.object,
+        searchToken: PropTypes.string
     }
 
     static defaultProps = {
         items: []
     }
 
-    state = {
-        input: ''
-    }
-
     onSearchFieldInput(input) {
-        this.setState({ input })
+        this.props.dispatch(updateSearchToken(input))
     }
 
     getItems() {
-        const token = this.state.input.trim()
-        const { items } = this.props
+        const { items, searchToken } = this.props
+        const token = searchToken.trim()
         const result = token ? searchByToken(token, items) : items
         return getRows(result)
     }
+
     render() {
+        const items = this.getItems()
         return (
-            <table className="table table-bordered">
-                <Header filters={this.props.filters} onSearchInput={this.onSearchFieldInput} />
-                <tbody>
-                    {this.getItems()}
-                </tbody>
-            </table>
+            <div>
+                <table className="table table-bordered">
+                    <TableHeader filters={this.props.filters} onSearchInput={this.onSearchFieldInput} />
+                    <Listing list={items} />
+                </table>
+                <Paging amount={items.length}/>
+            </div>
         )
     }
 }

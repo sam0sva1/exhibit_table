@@ -8,10 +8,12 @@ const configureStore = () => {
     const store = createStore(
         mainReducer,
         {
-            items: tools.sorting(data.initial, 'name'),
-            filters: tools.filtering(data.initial)
+            items: tools.sorting.array(data.initial, 'name'),
+            filters: tools.filtering(data.initial),
+            pagination: { current: 0, part: 2 },
+            searchToken: ''
         }
-    );
+    )
 
     return store
 }
