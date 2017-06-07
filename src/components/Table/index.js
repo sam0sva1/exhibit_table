@@ -9,26 +9,37 @@ import tools from 'Tools'
 import { changePage, updateSearchToken } from 'actions'
 import './Table.sss'
 
-const getRows = (items) => {
-    return items.map(({name, description, organization, city, country}) => {
-        return (
-            <tr key={name}>
-                <td>{name}</td>
-                <td>{tools.prepareOrigin(city, country)}</td>
-                <td>{organization}</td>
-                <td>{description}</td>
-            </tr>
-        )
+const formPages = (items, numberOfItems) => {
+    const pages = []
+    items.forEach((item, idx) => {
+        const i = Math.floor(idx / numberOfItems)
+        if (!pages[i]) pages.push([])
+        pages[i].push(item)
     })
+    return pages
+}
+
+const getPages = (items, part) => {
+    return formPages(getTableRows(items), part)
+}
+
+const getTableRows = (items) => {
+    return items.map(({ name, description, organization, origin }) => (
+        <tr key={name}>
+            <td>{name}</td>
+            <td>{origin}</td>
+            <td>{organization}</td>
+            <td>{description}</td>
+        </tr>
+    ))
 }
 
 const getFilteredItems = (items, filters) => {
-    const activeFilters = Object.keys(filters).filter(key => filters[key])
+    const activeFilters = filters.filter(f => f.isActive)
     if (activeFilters.length) {
-        return items.filter(({ city, country }) => {
-            const origin = tools.prepareOrigin(city, country)
-            for (let one of activeFilters) {
-                if (one === origin) {
+        return items.filter(({ origin }) => {
+            for (const one of activeFilters) {
+                if (one.name === origin) {
                     return true
                 }
             }
@@ -41,28 +52,36 @@ const getFilteredItems = (items, filters) => {
 
 const searchByToken = (token, items) => {
     const trimedToken = token.toLowerCase().trim()
-    return items.filter(one => {
+    return items.filter((one) => {
         const decision = one.name.toLowerCase().indexOf(trimedToken)
-        return decision === -1 ? false : true
+        return decision !== -1
     })
 }
 
+const prepareItems = (items, filters, searchToken) => {
+    const token = searchToken.trim()
+    const filteredItems = getFilteredItems(items, filters)
+    return token ? searchByToken(token, filteredItems) : filteredItems
+}
+
 @connect(
-    (state) => ({
+    state => ({
         ...state,
-        items: getFilteredItems(state.items, state.filters)
+        items: prepareItems(state.items, state.filters, state.searchToken)
     }),
     null
 )
 @autobind
 class Table extends Component {
     static propTypes = {
+        dispatch: PropTypes.func.isRequired,
+        filters: PropTypes.array,
         items: PropTypes.array,
-        pagination: PropTypes.object,
-        searchToken: PropTypes.string
+        pagination: PropTypes.object.isRequired
     }
 
     static defaultProps = {
+        filters: [],
         items: []
     }
 
@@ -70,22 +89,20 @@ class Table extends Component {
         this.props.dispatch(updateSearchToken(input))
     }
 
-    getItems() {
-        const { items, searchToken } = this.props
-        const token = searchToken.trim()
-        const result = token ? searchByToken(token, items) : items
-        return getRows(result)
-    }
-
     render() {
-        const items = this.getItems()
+        const { items, filters, dispatch, pagination: { part, current } } = this.props
+        const pages = getPages(items, part)
         return (
             <div>
-                <table className="table table-bordered">
-                    <TableHeader filters={this.props.filters} onSearchInput={this.onSearchFieldInput} />
-                    <Listing list={items} />
+                <table className='table table-bordered'>
+                    <TableHeader filters={filters} onSearchInput={this.onSearchFieldInput} />
+                    <Listing page={pages[current]} />
                 </table>
-                <Paging amount={items.length}/>
+                <Paging
+                    amount={pages.length}
+                    current={current}
+                    onNumberClick={(number) => { dispatch(changePage(number)) }}
+                />
             </div>
         )
     }

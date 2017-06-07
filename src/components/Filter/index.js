@@ -6,7 +6,7 @@ import Checkbox from 'components/Checkbox'
 import './Filter.sss'
 
 @connect(
-    (state) => ({...state}),
+    state => ({ ...state }),
     (dispatch) => {
         return {
             onFilterClick: (label) => {
@@ -16,18 +16,23 @@ import './Filter.sss'
     }
 )
 class Filter extends Component {
+    static propTypes = {
+        filters: PropTypes.array,
+        onFilterClick: PropTypes.func.isRequired
+    }
+
+    static defaultProps = {
+        filters: []
+    }
+
     render() {
         const { filters, onFilterClick } = this.props
         return (
             <div className='filter'>
-                {Object.keys(filters).map(key => <Checkbox key={key} label={key} isChecked={filters[key]} toggleFilter={onFilterClick}/>)}
+                {filters.map(({ name, isActive }) => <Checkbox key={name} label={name} isChecked={isActive} toggleFilter={onFilterClick} />)}
             </div>
         )
     }
-}
-
-Filter.propTypes = {
-    filters: PropTypes.array
 }
 
 export default Filter

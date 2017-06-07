@@ -1,7 +1,5 @@
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
-import { changePage } from 'actions'
 
 const makeButtons = (number, current, onClick) => {
     const buttons = []
@@ -12,34 +10,16 @@ const makeButtons = (number, current, onClick) => {
     return buttons
 }
 
-const getNumberOfPages = (amount, part) => {
-    return Math.ceil(amount / part)
-}
-
-@connect(
-    (state) => ({...state}),
-    (dispatch) => {
-        return {
-            onNumberClick: (number) => {
-                dispatch(changePage(number))
-            }
-        }
-    }
+const Paging = ({ amount, current, onNumberClick }) => (
+    <div className='pagination'>
+        {makeButtons(amount, current, onNumberClick)}
+    </div>
 )
-class Paging extends Component {
-    static propTypes = {
-        pagination: PropTypes.object,
-        amount: PropTypes.number,
-    }
 
-    render() {
-        const pages = getNumberOfPages(this.props.amount, this.props.pagination.part)
-        return (
-            <div className='pagination'>
-                {makeButtons(pages, this.props.pagination.current, this.props.onNumberClick)}
-            </div>
-        )
-    }
+Paging.propTypes = {
+    amount: PropTypes.number.isRequired,
+    current: PropTypes.number.isRequired,
+    onNumberClick: PropTypes.func.isRequired
 }
 
 export default Paging

@@ -4,12 +4,12 @@ const prepare = (incoming, field) => {
 }
 
 const mainSorting = (a, b) => {
-    if(a < b) return -1
-    if(a > b) return 1
+    if (a < b) return -1
+    if (a > b) return 1
     return 0
 }
 
-export const array = (array, field) => {
+const array = (array, field) => {
     return array.sort((a, b) => {
         const first = prepare(a, field)
         const second = prepare(b, field)
@@ -18,18 +18,4 @@ export const array = (array, field) => {
     })
 }
 
-export const properties = (state) => {
-    const result = {}
-    Object
-        .keys(state)
-        .sort((a, b) => mainSorting(a, b))
-        .forEach(one => {
-            result[one] = state[one]
-        })
-    return result
-}
-
-export default {
-    array,
-    properties
-}
+export default array

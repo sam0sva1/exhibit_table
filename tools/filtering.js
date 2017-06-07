@@ -3,20 +3,20 @@ import prepareOrigin from './prepareOrigin'
 
 export default (array) => {
     const names = []
-    const filters = {}
+    const filters = []
 
     array
         .map(({ city, country }) => {
             return prepareOrigin(city, country)
         })
-        .forEach(origin => {
+        .forEach((origin) => {
             if (!names.find(filter => filter === origin)) {
                 names.push(origin)
             }
         })
 
-    sorting.array(names)
-        .forEach(filter => filters[filter] = false)
+    sorting(names)
+        .forEach(filter => (filters.push({ name: filter, isActive: false })))
 
     return filters
 }

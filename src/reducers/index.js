@@ -5,10 +5,10 @@ import pagination from './pagination'
 import searchToken from './searchToken'
 
 const mainReducer = combineReducers({
-  items,
-  filters,
-  pagination,
-  searchToken
+    items,
+    filters,
+    pagination,
+    searchToken
 })
 
 export default mainReducer

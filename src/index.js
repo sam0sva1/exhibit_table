@@ -6,6 +6,10 @@ import Root from './components/Root'
 
 const store = configureStore()
 
+const showState = () => console.log('State', store.getState())
+showState()
+store.subscribe(showState)
+
 render(
   <Root store={store}/>,
   document.getElementById('root')

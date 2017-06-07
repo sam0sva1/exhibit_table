@@ -1,35 +1,24 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { toggleFilter, createItem } from 'actions'
+import { createItem } from 'actions'
 import autobind from 'autobind-decorator'
-import Checkbox from 'components/Checkbox'
 import './Form.sss'
-/*
-const Input = ({ label, onChange }) => {
-  return (
-    <div className="form__group">
-      <label className="form__label">
-        {label}
-        <input type="text" className="form__input" onInput={onChange} />
-      </label>
-    </div>
-  )
-}*/
 
-const Input = ({ label, value, onChange, textarea }) => {
-  return (
-    <div className="form__group">
-      <label className="form__label">
-        {label}
-        {textarea ? <textarea className="form__textarea" value={value} onChange={onChange}  /> : <input type="text" value={value} className="form__input" onInput={onChange} />}
-      </label>
+const Input = ({ label, value, onChange, textarea }) => (
+    <div className='form__group'>
+        <label className='form__label'>
+            {label}
+            {textarea
+                ? <textarea className='form__textarea' value={value} onChange={onChange} />
+                : <input type='text' value={value} className='form__input' onInput={onChange} />
+            }
+        </label>
     </div>
-  )
-}
+)
 
 @connect(
-    (state) => ({...state}),
+    state => ({ ...state }),
     (dispatch) => {
         return {
             createItemHandler: (item) => {
@@ -39,79 +28,77 @@ const Input = ({ label, value, onChange, textarea }) => {
     }
 )
 @autobind
-class Form extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      visible: false,
-      name: '',
-      city: '',
-      country: '',
-      organization: '',
-      description: ''
+class Form extends Component {
+    static propTypes = {
     }
-  }
 
-  handleChange(name, input) {
-    this.setState({[name]: input})
-  }
+    state = {
+        visible: false,
+        name: '',
+        city: '',
+        country: '',
+        organization: '',
+        description: ''
+    }
 
-  handleSubmit(event) {
-    const { name, city, country, organization, description } = this.state
-    const item = { name, city, country, organization, description }
-    this.cleanTheForm()
-    this.props.createItemHandler(item)
-  }
+    onSwitcherClick() {
+        this.setState({ visible: !this.state.visible })
+        this.cleanTheForm()
+    }
 
-  cleanTheForm() {
-    this.setState({
-      name: '',
-      city: '',
-      country: '',
-      organization: '',
-      description: ''
-    })
-  }
+    getForm() {
+        const { name, city, country, organization, description } = this.state
+        return (
+            <div className='form__wrapper'>
+                <div className='form__title'>Новый экспонат</div>
 
-  onSwitcherClick() {
-    this.setState({ visible: !this.state.visible })
-    this.cleanTheForm()
-  }
+                <Input label='Название' value={name} onChange={e => this.handleChange('name', e.target.value)} />
+                <Input label='Город' value={city} onChange={e => this.handleChange('city', e.target.value)} />
+                <Input label='Страна' value={country} onChange={e => this.handleChange('country', e.target.value)} />
+                <Input label='Организация' value={organization} onChange={e => this.handleChange('organization', e.target.value)} />
+                <Input label='Описание' value={description} onChange={e => this.handleChange('description', e.target.value)} textarea />
 
-  getForm() {
-    const { name, city, country, organization, description, visible } = this.state
-    return (
-      <div className="form__wrapper">
-        <div className="form__title">Новый экспонат</div>
+                <div className='form__group'>
+                    <div className='form__control'>
+                        <button onClick={this.handleSubmit} className='form__btn btn'>Добавить</button>
+                    </div>
+                </div>
+            </div>
+        )
+    }
 
-        <Input label='Название'     value={name}          onChange={(e) => this.handleChange('name', e.target.value)} />
-        <Input label='Город'        value={city}          onChange={(e) => this.handleChange('city', e.target.value)} />
-        <Input label='Страна'       value={country}       onChange={(e) => this.handleChange('country', e.target.value)} />
-        <Input label='Организация'  value={organization}  onChange={(e) => this.handleChange('organization', e.target.value)} />
-        <Input label='Описание'     value={description}   onChange={(e) => this.handleChange('description', e.target.value)} textarea />
+    handleChange(name, input) {
+        this.setState({ [name]: input })
+    }
 
-        <div className="form__group">
-          <div className="form__control">
-            <button onClick={this.handleSubmit} className="form__btn btn">Добавить</button>
-          </div>
-        </div>
-      </div>
-    )
-  }
+    handleSubmit() {
+        const { name, city, country, organization, description } = this.state
+        const item = { name, city, country, organization, description }
+        this.cleanTheForm()
+        this.props.createItemHandler(item)
+    }
 
-  render() {
-    const { visible } = this.state
-    return (
-      <div className='form'>
-        <button onClick={this.onSwitcherClick} className="btn">{visible ? 'Скрыть форму' : 'Добавить экспонат'}</button>
-        { visible ? this.getForm() : ''}
-      </div>
-    )
-  }
-}
+    cleanTheForm() {
+        this.setState({
+            name: '',
+            city: '',
+            country: '',
+            organization: '',
+            description: ''
+        })
+    }
 
-Form.propTypes = {
-    filters: PropTypes.array
+    render() {
+        const { visible } = this.state
+        return (
+            <div className='form'>
+                <button onClick={this.onSwitcherClick} className='btn'>
+                    {visible ? 'Скрыть форму' : 'Добавить экспонат'}
+                </button>
+                { visible ? this.getForm() : ''}
+            </div>
+        )
+    }
 }
 
 export default Form

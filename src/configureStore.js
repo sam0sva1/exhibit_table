@@ -8,9 +8,9 @@ const configureStore = () => {
     const store = createStore(
         mainReducer,
         {
-            items: tools.sorting.array(data.initial, 'name'),
+            items: tools.sorting(tools.prepareData(data.initial), 'name'),
             filters: tools.filtering(data.initial),
-            pagination: { current: 0, part: 2 },
+            pagination: { current: 0, part: 10 },
             searchToken: ''
         }
     )

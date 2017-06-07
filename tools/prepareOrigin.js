@@ -1,7 +1,3 @@
-export default ( city, country ) => {
-    if (city && country) {
-        return `${city}, ${country}`
-    } else {
-        return `${city}${country}` || '—'
-    }
+export default (city, country) => {
+    return (city && country) ? `${city}, ${country}` : `${city}${country}` || '—'
 }
