@@ -4,7 +4,7 @@ import autobind from 'autobind-decorator'
 import { connect } from 'react-redux'
 import TableHeader from 'components/TableHeader'
 import Paging from 'components/Paging'
-import Listing from 'components/Listing'
+import List from 'components/List'
 import tools from 'Tools'
 import { changePage, updateSearchToken } from 'actions'
 import { prepareItems, getPages } from './helpers'
@@ -42,7 +42,7 @@ class Table extends Component {
             <div>
                 <table className='table table-bordered'>
                     <TableHeader filters={filters} onSearchInput={this.onSearchFieldInput} />
-                    <Listing page={pages[current]} />
+                    <List page={pages[current]} />
                 </table>
                 <Paging
                     amount={pages.length}

@@ -10,10 +10,6 @@ export const formPages = (items, numberOfItems) => {
     return pages
 }
 
-export const getPages = (items, part) => {
-    return formPages(getTableRows(items), part)
-}
-
 export const getTableRows = (items) => {
     return items.map(({ name, description, organization, origin }) => (
         <tr key={name}>
@@ -23,6 +19,10 @@ export const getTableRows = (items) => {
             <td>{description}</td>
         </tr>
     ))
+}
+
+export const getPages = (items, part) => {
+    return formPages(getTableRows(items), part)
 }
 
 export const getFilteredItems = (items, filters) => {
