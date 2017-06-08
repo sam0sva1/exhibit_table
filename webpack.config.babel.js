@@ -26,7 +26,8 @@ export default {
                         sourceMap: true,
                         parser: 'sugarss',
                         plugins: [
-                            require('postcss-cssnext')
+                            require('autoprefixer'),
+                            require('postcss-nested')
                         ]
                     }
                 }
