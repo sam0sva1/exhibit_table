@@ -15,7 +15,16 @@ import './Table.sss'
         ...state,
         items: prepareItems(state.items, state.filters, state.searchToken)
     }),
-    null
+    (dispatch) => {
+        return {
+            onSearchFieldInput: (input) => {
+                dispatch(updateSearchToken(input))
+            },
+            onBtnClickHandler: (number) => {
+                dispatch(changePage(number))
+            }
+        }
+    }
 )
 @autobind
 class Table extends Component {
@@ -23,7 +32,9 @@ class Table extends Component {
         dispatch: PropTypes.func.isRequired,
         filters: PropTypes.array,
         items: PropTypes.array,
-        pagination: PropTypes.object.isRequired
+        onBtnClickHandler: PropTypes.func.isRequired,
+        onSearchFieldInput: PropTypes.func.isRequired,
+        pagination: PropTypes.object.isRequired,
     }
 
     static defaultProps = {
@@ -31,23 +42,19 @@ class Table extends Component {
         items: []
     }
 
-    onSearchFieldInput(input) {
-        this.props.dispatch(updateSearchToken(input))
-    }
-
     render() {
-        const { items, filters, dispatch, pagination: { part, current } } = this.props
+        const { items, filters, pagination: { part, current }, onSearchFieldInput, onBtnClickHandler } = this.props
         const pages = getPages(items, part)
         return (
             <div>
                 <table className='table table-bordered'>
-                    <TableHeader filters={filters} onSearchInput={this.onSearchFieldInput} />
+                    <TableHeader filters={filters} onSearchInput={onSearchFieldInput} />
                     <List page={pages[current]} />
                 </table>
                 <Paging
                     amount={pages.length}
                     current={current}
-                    onNumberClick={(number) => { dispatch(changePage(number)) }}
+                    onNumberClick={onBtnClickHandler}
                 />
             </div>
         )
