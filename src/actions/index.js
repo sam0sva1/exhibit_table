@@ -3,11 +3,6 @@ export const toggleFilter = label => ({
     label
 })
 
-export const updatePagination = amount => ({
-    type: 'UPDATE_PAGINATION',
-    amount
-})
-
 export const changePage = number => ({
     type: 'CHANGE_PAGE',
     number
