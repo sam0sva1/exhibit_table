@@ -1,4 +1,9 @@
-const pages = (state = {}, action) => {
+const initialState = {
+    current: 0,
+    part: 2
+}
+
+const pages = (state = initialState, action) => {
     switch (action.type) {
         case 'CHANGE_PAGE':
             return {

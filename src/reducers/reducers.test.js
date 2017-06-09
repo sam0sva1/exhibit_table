@@ -1,5 +1,6 @@
 import itemsReducer from './items'
 import filtersReducer from './filters'
+import paginationReducer from './pagination'
 
 const initItemsState = {
     name: 'Экспонат',
@@ -103,6 +104,62 @@ describe('Reducers - filters', () => {
             { name: 'Ереван, Россия', isActive: false },
             { name: 'Калининград, Россия', isActive: false }
         ])
+    })
+
+})
+
+describe('Reducers - pagination', () => {
+
+    test('Test 1 - no action', () => {
+        expect(
+            paginationReducer(undefined, {})
+        ).toEqual({
+            current: 0,
+            part: 2
+        })
+    })
+
+    test('Test 2 - TOGGLE FILTER', () => {
+        expect(
+            paginationReducer({
+                current: 2,
+                part: 2
+            }, {
+                type: 'TOGGLE_FILTER'
+            })
+        ).toEqual({
+            current: 0,
+            part: 2
+        })
+    })
+
+    test('Test 3 - NEW SEARCH', () => {
+        expect(
+            paginationReducer({
+                current: 2,
+                part: 2
+            }, {
+                type: 'NEW_SEARCH'
+            })
+        ).toEqual({
+            current: 0,
+            part: 2
+        })
+    })
+
+    test('Test 4 - CHANGE PAGE', () => {
+        expect(
+            paginationReducer({
+                current: 0,
+                part: 2
+            }, {
+                type: 'CHANGE_PAGE',
+                number: 3
+            })
+        ).toEqual({
+            current: 3,
+            part: 2
+        })
     })
 
 })
