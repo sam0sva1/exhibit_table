@@ -1,6 +1,7 @@
 import itemsReducer from './items'
 import filtersReducer from './filters'
 import paginationReducer from './pagination'
+import serchTokenReducer from './searchToken'
 
 const initItemsState = {
     name: 'Экспонат',
@@ -160,6 +161,25 @@ describe('Reducers - pagination', () => {
             current: 3,
             part: 2
         })
+    })
+
+})
+
+describe('Reducers - searchToken', () => {
+
+    test('Test 1 - no action', () => {
+        expect(
+            serchTokenReducer(undefined, {})
+        ).toEqual('')
+    })
+
+    test('Test 2 - NEW SEARCH', () => {
+        expect(
+            serchTokenReducer(undefined, {
+                type: 'NEW_SEARCH',
+                token: 'Экспонат'
+            })
+        ).toEqual('Экспонат')
     })
 
 })
