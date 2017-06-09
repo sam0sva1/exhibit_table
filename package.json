@@ -6,6 +6,23 @@
     "test": "jest",
     "test:watch": "jest --watch"
   },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "jsx"
+    ],
+    "moduleDirectories": [
+      "node_modules"
+    ],
+    "moduleNameMapper": {
+      "^components(.*)$": "<rootDir>/src/components$1",
+      "^actions$": "<rootDir>/src/actions",
+      "^Tools$": "<rootDir>/tools",
+      "^Data$": "<rootDir>/data",
+
+      "\\.(sss)$": "identity-obj-proxy"
+    }
+  },
   "repository": "git@github.com:sam0sva1/exhibit_table.git",
   "author": "sam0sva1 <konstantus@live.ru>",
   "license": "MIT",
@@ -31,6 +48,7 @@
     "eslint-plugin-jsx-a11y": "^5.0.3",
     "eslint-plugin-react": "^7.0.1",
     "express": "^4.15.3",
+    "identity-obj-proxy": "^3.0.0",
     "jest": "^20.0.4",
     "postcss-loader": "^2.0.5",
     "postcss-nested": "^2.0.2",
