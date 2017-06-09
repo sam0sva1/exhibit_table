@@ -29,7 +29,6 @@ import './Table.sss'
 @autobind
 class Table extends Component {
     static propTypes = {
-        dispatch: PropTypes.func.isRequired,
         filters: PropTypes.array,
         items: PropTypes.array,
         onBtnClickHandler: PropTypes.func.isRequired,
