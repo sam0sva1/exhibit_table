@@ -10,7 +10,7 @@ const configureStore = () => {
         {
             items: tools.sorting(tools.prepareData(data.initial), 'name'),
             filters: tools.filtering(data.initial),
-            pagination: { current: 0, part: 10 },
+            pagination: { current: 0, part: 2 },
             searchToken: ''
         }
     )
