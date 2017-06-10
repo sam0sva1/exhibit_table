@@ -1,6 +1,7 @@
 import sorting from './sorting'
 import filtering from './filtering'
 import prepareOrigin from './prepareOrigin'
+import prepareData from './prepareData'
 
 describe('Tools', () => {
 
@@ -79,6 +80,22 @@ describe('Tools', () => {
         test('Test 4 - gets neither city or country ', () => {
 
             expect(prepareOrigin('', '')).toEqual('—')
+        })
+
+    })
+
+    describe('prepareData', () => {
+
+        test('Test 1 - gets an array of items and insert the origin property to every item', () => {
+            const items = [
+                { name: 'Футляр фотоаппарата "Certo Dollina"', city: 'Дрезден', country: 'Германия', organization: '', description: '' },
+                { name: 'Фотоаппарат \'Смена\', клаппкамера с автоматически устанавливающейся объективной доской', city: '', country: '', organization: 'Государственный оптико-механический завод (ГОМЗ)', description: '' }
+            ]
+
+            expect(prepareData(items)).toEqual([
+                { origin: 'Дрезден, Германия', name: 'Футляр фотоаппарата "Certo Dollina"', city: 'Дрезден', country: 'Германия', organization: '', description: '' },
+                { origin: '—', name: 'Фотоаппарат \'Смена\', клаппкамера с автоматически устанавливающейся объективной доской', city: '', country: '', organization: 'Государственный оптико-механический завод (ГОМЗ)', description: '' }
+            ])
         })
 
     })
