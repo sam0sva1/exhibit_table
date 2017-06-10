@@ -5,6 +5,10 @@ const filters = (state = [], action) => {
         case 'TOGGLE_FILTER':
             return state.map(f => filter(f, action))
         case 'CREATE_ITEM':
+            const { city, country } = action.item
+            const origin = tools.prepareOrigin(city, country)
+            const exist = state.find(one => one.name === origin)
+            if (exist) return state
             return tools.sorting([
                 ...state,
                 filter(undefined, action)
