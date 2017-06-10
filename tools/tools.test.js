@@ -1,5 +1,6 @@
 import sorting from './sorting'
 import filtering from './filtering'
+import prepareOrigin from './prepareOrigin'
 
 describe('Tools', () => {
 
@@ -54,6 +55,30 @@ describe('Tools', () => {
             ]
 
             expect(filtering(items)).toEqual(result)
+        })
+
+    })
+
+    describe('prepareOrigin', () => {
+
+        test('Test 1 - gets either city and country', () => {
+
+            expect(prepareOrigin('Манаус', 'Бразилия')).toEqual('Манаус, Бразилия')
+        })
+
+        test('Test 2 - gets only city', () => {
+
+            expect(prepareOrigin('Манаус', '')).toEqual('Манаус')
+        })
+
+        test('Test 3 - gets only country', () => {
+
+            expect(prepareOrigin('', 'Бразилия')).toEqual('Бразилия')
+        })
+
+        test('Test 4 - gets neither city or country ', () => {
+
+            expect(prepareOrigin('', '')).toEqual('—')
         })
 
     })
