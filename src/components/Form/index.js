@@ -30,6 +30,7 @@ const Input = ({ label, value, onChange, textarea }) => (
 @autobind
 class Form extends Component {
     static propTypes = {
+        createItemHandler: PropTypes.func.isRequired
     }
 
     state = {
@@ -60,7 +61,7 @@ class Form extends Component {
 
                 <div className='form__group'>
                     <div className='form__control'>
-                        <button onClick={this.handleSubmit} className='form__btn btn'>Добавить</button>
+                        <button onClick={this.handleSubmit} className='form__btn btn' disabled={!name}>Добавить</button>
                     </div>
                 </div>
             </div>
@@ -74,6 +75,7 @@ class Form extends Component {
     handleSubmit() {
         const { name, city, country, organization, description } = this.state
         const item = { name, city, country, organization, description }
+        Object.keys(item).forEach((key) => { item[key] = item[key].trim() })
         this.cleanTheForm()
         this.props.createItemHandler(item)
     }
