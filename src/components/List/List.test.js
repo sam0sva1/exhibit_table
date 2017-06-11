@@ -30,10 +30,27 @@ const items = [
     }
 ]
 
+function init() {
+
+    const props = {
+        page: getTableRows(items)
+    }
+
+    const wrapper = shallow(
+        <List {...props} />
+    )
+
+    return {
+        wrapper,
+        props
+    }
+}
+
 describe('List', () => {
     test('render list of elements', () => {
-        const component = shallow(<List page={getTableRows(items)} />)
-        expect(component.find('tbody')).toHaveLength(1)
-        expect(component.find('tr')).toHaveLength(4)
+        const { wrapper, props } = init()
+
+        expect(wrapper.find('tbody')).toHaveLength(1)
+        expect(wrapper.find('tr')).toHaveLength(props.page.length)
     })
 })

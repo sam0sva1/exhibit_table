@@ -1,15 +1,9 @@
 import React from 'react'
-import { Provider } from 'react-redux'
-import { shallow, mount } from 'enzyme'
+import { mount } from 'enzyme'
 import Form from './index'
 import configureStore from '../../configureStore'
 
 function init() {
-    const Wrapper = ({ children }) => (
-        <div>
-            {children}
-        </div>
-    )
 
     const wrapper = mount(
         <Form store={configureStore()} />

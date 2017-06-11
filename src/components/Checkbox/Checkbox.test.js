@@ -1,6 +1,5 @@
 import React from 'react'
-import { Provider } from 'react-redux'
-import { shallow, mount } from 'enzyme'
+import { shallow } from 'enzyme'
 import Checkbox from './index'
 
 function init() {

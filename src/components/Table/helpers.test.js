@@ -1,5 +1,5 @@
 import React from 'react'
-import { shallow, mount, render } from 'enzyme'
+import { shallow } from 'enzyme'
 import { formPages, getFilteredItems, searchByToken, getTableRows } from './helpers'
 
 const toPages = (() => {
@@ -10,7 +10,7 @@ const toPages = (() => {
     return set
 })()
 
-describe("Helpers - formPages", () => {
+describe('Helpers - formPages', () => {
 
     test('Test 1 - 10 items in a page', () => {
         const expectation = expect(formPages(toPages, 10))
@@ -80,7 +80,7 @@ const filtersForTest4 = [
     { name: 'Мельбурн, Австралия', isActive: true }
 ]
 
-describe("Helpers - getFilteredItems", () => {
+describe('Helpers - getFilteredItems', () => {
 
     test('Test 1 - no filters', () => {
         const expectation = expect(getFilteredItems(items, filtersForTest1))
@@ -129,9 +129,9 @@ describe('Helpers - searchByToken', () => {
     })
 })
 
-describe('Tabel - getTableRows', () => {
+describe('Helpers - getTableRows', () => {
 
-    test('', () => {
+    test('Test 1 - returns rows into tbody', () => {
         const component = shallow(<tbody>{getTableRows(items)}</tbody>)
         expect(component.find('td')).toHaveLength(16)
         expect(component.find('tr')).toHaveLength(4)
