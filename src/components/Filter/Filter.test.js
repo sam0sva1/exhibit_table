@@ -1,6 +1,6 @@
 import React from 'react'
 import { Provider } from 'react-redux'
-import { shallow, mount } from 'enzyme'
+import { mount } from 'enzyme'
 import Filter from './index'
 import configureStore from '../../configureStore'
 
@@ -34,7 +34,7 @@ describe('Components', () => {
 
     describe('Filter', () => {
 
-        test('render it self and checkboxes', () => {
+        test('renders it self and checkboxes', () => {
             const { wrapper, filters } = init(store)
 
             expect(wrapper.find('.filter')).toHaveLength(1)
